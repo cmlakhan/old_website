@@ -70,6 +70,8 @@ img {
 
 <p>setwd(“~/Documents/gitProjects/RcodeRegMethBiostat/code”)</p>
 <p>This dataset is the Heart and Estrogen/Progestin Study (HERS), a clinical trial of hormone therapy for prevention of recurrent heart attacks and deaths among 2,763 post-menopausal women with existing coronary heart disease.</p>
+<div id="continuous-outcome-variables" class="section level1">
+<h1>Continuous Outcome Variables</h1>
 <div id="t-test-example" class="section level2">
 <h2>T-test Example</h2>
 <p>We will first calculate a t-test to compare the difference in glucose levels based on excercise</p>
@@ -205,6 +207,214 @@ summary(model)</code></pre>
 ## 
 ## P value adjustment method: fdr</code></pre>
 <p>All of these methods seem to show is a statistically significant difference in SBP between Whites and African Americans</p>
+</div>
+</div>
+</div>
+<div id="categorical-outcome-variables" class="section level1">
+<h1>Categorical Outcome Variables</h1>
+<div id="measures-of-risk-and-association" class="section level2">
+<h2>Measures of Risk and Association</h2>
+<div id="risk-difference" class="section level3">
+<h3>Risk Difference</h3>
+<pre class="r"><code>library(aod)
+
+wcgs &lt;- read.csv(&quot;wcgs.csv&quot;)
+tableComparison &lt;- table(wcgs$arcus,wcgs$chd69)
+tableComparison &lt;- tableComparison[,c(2,1)]
+prop.test(table(wcgs$arcus,wcgs$chd69))</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  table(wcgs$arcus, wcgs$chd69)
+## X-squared = 13.1161, df = 1, p-value = 0.0002928
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.01593398 0.06245776
+## sample estimates:
+##    prop 1    prop 2 
+## 0.9308005 0.8916047</code></pre>
+<pre class="r"><code>tableXtabs &lt;- xtabs(~arcus+chd69,data=wcgs)
+prop.test(tableXtabs)</code></pre>
+<pre><code>## 
+##  2-sample test for equality of proportions with continuity
+##  correction
+## 
+## data:  tableXtabs
+## X-squared = 13.1161, df = 1, p-value = 0.0002928
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  0.01593398 0.06245776
+## sample estimates:
+##    prop 1    prop 2 
+## 0.9308005 0.8916047</code></pre>
+</div>
+<div id="risk-ratio" class="section level3">
+<h3>Risk Ratio</h3>
+<pre class="r"><code>library(epitools)
+riskratio(tableXtabs, method = c(&quot;wald&quot;),conf.level = 0.95,rev = c(&quot;neither&quot;, &quot;rows&quot;, &quot;columns&quot;, &quot;both&quot;))</code></pre>
+<pre><code>## $data
+##        chd69
+## arcus     No Yes Total
+##   0     2058 153  2211
+##   1      839 102   941
+##   Total 2897 255  3152
+## 
+## $measure
+##      risk ratio with 95% C.I.
+## arcus estimate    lower    upper
+##     0 1.000000       NA       NA
+##     1 1.566419 1.233865 1.988603
+## 
+## $p.value
+##      two-sided
+## arcus   midp.exact fisher.exact   chi.square
+##     0           NA           NA           NA
+##     1 0.0003159313 0.0003407814 0.0002216321
+## 
+## $correction
+## [1] FALSE
+## 
+## attr(,&quot;method&quot;)
+## [1] &quot;Unconditional MLE &amp; normal approximation (Wald) CI&quot;</code></pre>
+</div>
+<div id="odds-ratio" class="section level3">
+<h3>Odds Ratio</h3>
+<pre class="r"><code>oddsratio(tableXtabs, method = c(&quot;wald&quot;),conf.level = 0.95,rev = c(&quot;neither&quot;, &quot;rows&quot;, &quot;columns&quot;, &quot;both&quot;))</code></pre>
+<pre><code>## $data
+##        chd69
+## arcus     No Yes Total
+##   0     2058 153  2211
+##   1      839 102   941
+##   Total 2897 255  3152
+## 
+## $measure
+##      odds ratio with 95% C.I.
+## arcus estimate lower    upper
+##     0  1.00000    NA       NA
+##     1  1.63528 1.257 2.127399
+## 
+## $p.value
+##      two-sided
+## arcus   midp.exact fisher.exact   chi.square
+##     0           NA           NA           NA
+##     1 0.0003159313 0.0003407814 0.0002216321
+## 
+## $correction
+## [1] FALSE
+## 
+## attr(,&quot;method&quot;)
+## [1] &quot;Unconditional MLE &amp; normal approximation (Wald) CI&quot;</code></pre>
+</div>
+<div id="multiple-predictors" class="section level3">
+<h3>Multiple Predictors</h3>
+<pre class="r"><code>multiPredictors &lt;- xtabs(~agec+chd69,data=wcgs)
+
+prop.test(multiPredictors)</code></pre>
+<pre><code>## 
+##  5-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  multiPredictors
+## X-squared = 46.6534, df = 4, p-value = 1.801e-09
+## alternative hypothesis: two.sided
+## sample estimates:
+##    prop 1    prop 2    prop 3    prop 4    prop 5 
+## 0.9429098 0.9495875 0.9066667 0.8768939 0.8512397</code></pre>
+<pre class="r"><code>riskratio(multiPredictors, method = c(&quot;wald&quot;),conf.level = 0.95,rev = c(&quot;neither&quot;, &quot;rows&quot;, &quot;columns&quot;, &quot;both&quot;))</code></pre>
+<pre><code>## $data
+##        chd69
+## agec      No Yes Total
+##   35-40  512  31   543
+##   41-45 1036  55  1091
+##   46-50  680  70   750
+##   51-55  463  65   528
+##   56-60  206  36   242
+##   Total 2897 257  3154
+## 
+## $measure
+##        risk ratio with 95% C.I.
+## agec     estimate     lower    upper
+##   35-40 1.0000000        NA       NA
+##   41-45 0.8830313 0.5755812 1.354708
+##   46-50 1.6348387 1.0869527 2.458891
+##   51-55 2.1563416 1.4300676 3.251461
+##   56-60 2.6057051 1.6520014 4.109984
+## 
+## $p.value
+##        two-sided
+## agec      midp.exact fisher.exact   chi.square
+##   35-40           NA           NA           NA
+##   41-45 5.665956e-01 5.587536e-01 5.690688e-01
+##   46-50 1.573609e-02 2.049340e-02 1.653286e-02
+##   51-55 1.499986e-04 1.631541e-04 1.561175e-04
+##   56-60 5.019449e-05 4.717556e-05 2.186623e-05
+## 
+## $correction
+## [1] FALSE
+## 
+## attr(,&quot;method&quot;)
+## [1] &quot;Unconditional MLE &amp; normal approximation (Wald) CI&quot;</code></pre>
+<pre class="r"><code>oddsratio(multiPredictors, method = c(&quot;wald&quot;),conf.level = 0.95,rev = c(&quot;neither&quot;, &quot;rows&quot;, &quot;columns&quot;, &quot;both&quot;))</code></pre>
+<pre><code>## $data
+##        chd69
+## agec      No Yes Total
+##   35-40  512  31   543
+##   41-45 1036  55  1091
+##   46-50  680  70   750
+##   51-55  463  65   528
+##   56-60  206  36   242
+##   Total 2897 257  3154
+## 
+## $measure
+##        odds ratio with 95% C.I.
+## agec     estimate     lower    upper
+##   35-40 1.0000000        NA       NA
+##   41-45 0.8768215 0.5575563 1.378903
+##   46-50 1.7001898 1.0970460 2.634935
+##   51-55 2.3186790 1.4845452 3.621494
+##   56-60 2.8863138 1.7388945 4.790864
+## 
+## $p.value
+##        two-sided
+## agec      midp.exact fisher.exact   chi.square
+##   35-40           NA           NA           NA
+##   41-45 5.665956e-01 5.587536e-01 5.690688e-01
+##   46-50 1.573609e-02 2.049340e-02 1.653286e-02
+##   51-55 1.499986e-04 1.631541e-04 1.561175e-04
+##   56-60 5.019449e-05 4.717556e-05 2.186623e-05
+## 
+## $correction
+## [1] FALSE
+## 
+## attr(,&quot;method&quot;)
+## [1] &quot;Unconditional MLE &amp; normal approximation (Wald) CI&quot;</code></pre>
+<pre class="r"><code>epitab(multiPredictors,method = c(&quot;oddsratio&quot;, &quot;riskratio&quot;, &quot;rateratio&quot;))</code></pre>
+<pre><code>## $tab
+##        chd69
+## agec      No         p0 Yes        p1 oddsratio     lower    upper
+##   35-40  512 0.17673455  31 0.1206226 1.0000000        NA       NA
+##   41-45 1036 0.35761132  55 0.2140078 0.8768215 0.5575563 1.378903
+##   46-50  680 0.23472558  70 0.2723735 1.7001898 1.0970460 2.634935
+##   51-55  463 0.15982050  65 0.2529183 2.3186790 1.4845452 3.621494
+##   56-60  206 0.07110804  36 0.1400778 2.8863138 1.7388945 4.790864
+##        chd69
+## agec         p.value
+##   35-40           NA
+##   41-45 5.587536e-01
+##   46-50 2.049340e-02
+##   51-55 1.631541e-04
+##   56-60 4.717556e-05
+## 
+## $measure
+## [1] &quot;wald&quot;
+## 
+## $conf.level
+## [1] 0.95
+## 
+## $pvalue
+## [1] &quot;fisher.exact&quot;</code></pre>
+</div>
 </div>
 </div>
 
