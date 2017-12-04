@@ -1,5 +1,7 @@
-Title: My First Review
+Title: My super title
 Date: 2010-12-03 10:20
-Category: Review
+Category: Python
+Authors: Alexis Metaireau, Conan Doyle
 
-Following is a review of my favorite mechanical keyboard.
+This is the content of my super blog post.
+
