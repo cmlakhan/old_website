@@ -6,7 +6,7 @@ Authors: Chirag Lakhani
 
 About Me:
 ==================
-I am a postdoctoral fellow in the [Department of Biomedical Informatics] (http://dbmi.hms.harvard.edu/)at Harvard Medical School where I am mentored by [Chirag Patel](http://www.chiragjpgroup.org/).  Before coming to Harvard I was a Data Scientist at [HelloWallet](http://www.hellowallet.com/).  I also have a PhD in mathematics from [North Carolina State University](https://math.sciences.ncsu.edu/).
+I am a postdoctoral fellow in the [Department of Biomedical Informatics](http://dbmi.hms.harvard.edu/)at Harvard Medical School where I am mentored by [Chirag Patel](http://www.chiragjpgroup.org/).  Before coming to Harvard I was a Data Scientist at [HelloWallet](http://www.hellowallet.com/).  I also have a PhD in mathematics from [North Carolina State University](https://math.sciences.ncsu.edu/).
 
 
 Research Interests:
