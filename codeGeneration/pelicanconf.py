@@ -20,7 +20,7 @@ DEFAULT_LANG = 'en'
 #AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('CV', 'https://www.dropbox.com/s/1l50t78t67jatuy/chiragCV-updated.pdf?dl=0'),
+LINKS = (('CV', 'https://cmlakhan.github.io/CV/chiraglakhaniCV.pdf'),
 		 ('Harvard DBMI', 'http://dbmi.hms.harvard.edu/'),
          ('Chirag Patel Group', 'http://www.chiragjpgroup.org/'),)
 
